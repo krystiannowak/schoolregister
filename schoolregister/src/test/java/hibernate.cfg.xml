@@ -23,5 +23,7 @@
 		<!-- List of XML mapping files -->
 		<!-- <mapping resource="hello/Message.hbm.xml"/> -->
 		
+		<mapping class="org.schoolregister.bo.StudentImpl"/>
+		
 	</session-factory>
 </hibernate-configuration>
