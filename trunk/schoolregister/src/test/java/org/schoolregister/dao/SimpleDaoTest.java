@@ -15,10 +15,8 @@ public class SimpleDaoTest extends TestCase {
 	}
 
 	public void testPersistenceConfig() {
-		System.out.println("a");
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("schoolregister");
-		// emf.close();
 	}
 
 }
