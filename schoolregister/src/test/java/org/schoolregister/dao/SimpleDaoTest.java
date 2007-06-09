@@ -13,6 +13,14 @@ public class SimpleDaoTest extends TestCase {
 		AnnotationConfiguration cfg = new AnnotationConfiguration();
 		cfg.configure("hibernate.cfg.xml");
 		SessionFactory sessionFactory = cfg.buildSessionFactory();
+
+		Session session = sessionFactory.openSession();
+
+		session.get(StudentImpl.class, 0L);
+
+		session.flush();
+		session.close();
+
 	}
 
 	public void testPersistenceConfig() {
@@ -22,6 +30,9 @@ public class SimpleDaoTest extends TestCase {
 		EntityManager mgr = emf.createEntityManager();
 
 		mgr.find(StudentImpl.class, 0L);
+
+		// mgr.flush();
+		mgr.close();
 
 	}
 
