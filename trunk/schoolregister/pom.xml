@@ -7,7 +7,12 @@
 	<name>schoolregister</name>
 	<packaging>war</packaging>
 	<version>1.0</version>
-	<url>http://maven.apache.org</url>
+	<url>http://schoolregister.googlecode.com/</url>
+	<inceptionYear>2007</inceptionYear>
+	<organization>
+		<name>Krystian Nowak</name>
+		<url>http://www.krystian-nowak.poznan.pl/</url>
+	</organization>
 	<scm>
 		<connection>
 			scm:svn:https://schoolregister.googlecode.com/svn/trunk/schoolregister
