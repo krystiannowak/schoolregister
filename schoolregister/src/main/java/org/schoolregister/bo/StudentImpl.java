@@ -4,6 +4,11 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * 
+ * @author krystian
+ * 
+ */
 @Entity
 @Table(name = "STUDENT")
 public class StudentImpl implements Student {
