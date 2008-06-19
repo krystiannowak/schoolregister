@@ -92,28 +92,35 @@ public class XmlExporter {
 		writer.flush();
 	}
 
-	private static String tag(String name, String value) {
+	private static String openTag(String name) {
 		StringBuffer tags = new StringBuffer();
-
 		tags.append('<');
 		tags.append(name);
 		tags.append('>');
+		return tags.toString();
+	}
 
-		tags.append(value);
-
+	private static String closeTag(String name) {
+		StringBuffer tags = new StringBuffer();
 		tags.append("</");
 		tags.append(name);
 		tags.append('>');
-
 		return tags.toString();
+	}
 
+	private static String tag(String name, String value) {
+		StringBuffer tags = new StringBuffer();
+		tags.append(openTag(name));
+		tags.append(value);
+		tags.append(closeTag(name));
+		return tags.toString();
 	}
 
 	// to ini file?
 	private static String unitTags() {
 		StringBuffer tags = new StringBuffer();
 
-		tags.append("<jednostka>");
+		tags.append(openTag("jednostka"));
 
 		tags.append(tag("nazwa_placowki1", ""));
 		tags.append(tag("nazwa_placowki2", "Poznańską"));
@@ -128,7 +135,7 @@ public class XmlExporter {
 		tags.append(tag("rok_szkolny1", "2007"));
 		tags.append(tag("rok_szkolny2", "2008"));
 
-		tags.append("</jednostka>");
+		tags.append(closeTag("jednostka"));
 
 		return tags.toString();
 	}
@@ -136,67 +143,30 @@ public class XmlExporter {
 	private static String studentTags(Student student) {
 		StringBuffer tags = new StringBuffer();
 
-		tags.append("<uczen>");
+		tags.append(openTag("uczen"));
 
 		tags.append(studentNumberTags(student));
 
-		tags.append("<imie_nazwisko>");
-		tags.append(student.getFirstNames());
-		tags.append(' ');
-		tags.append(student.getLastName());
-		tags.append("</imie_nazwisko>");
+		tags.append(tag("imie_nazwisko", student.getFirstNames() + " "
+				+ student.getLastName()));
 
-		tags.append("<aluby>");
-		if (student.isFemale()) {
-			tags.append("a");
-		} else {
-			tags.append("y");
-		}
-		tags.append("</aluby>");
+		tags.append(tag("aluby", student.isFemale() ? "a" : "y"));
+		tags.append(tag("alubkreska", student.isFemale() ? "a" : "-"));
+		tags.append(tag("kalubkreska", student.isFemale() ? "ka" : "-"));
 
-		tags.append("<alubkreska>");
-		if (student.isFemale()) {
-			tags.append("a");
-		} else {
-			tags.append("-");
-		}
-		tags.append("</alubkreska>");
-
-		tags.append("<kalubkreska>");
-		if (student.isFemale()) {
-			tags.append("ka");
-		} else {
-			tags.append("-");
-		}
-		tags.append("</kalubkreska>");
-
-		tags.append("<kreskalubnie>");
-		tags.append("-");
-		tags.append("</kreskalubnie>");
-
-		tags.append("<ilube>");
-		tags.append("ę");
-		tags.append("</ilube>");
-
-		tags.append("<dzien_miesiac_urodzenia>");
-		tags.append(DateUtils.extractDayMonth(student.getBirthDate()));
-		tags.append("</dzien_miesiac_urodzenia>");
-
-		tags.append("<rok_urodzenia>");
-		tags.append(DateUtils.extractYear(student.getBirthDate()));
-		tags.append("</rok_urodzenia>");
-
-		tags.append("<miejscowosc_urodzenia>");
-		tags.append(student.getBirthCity());
-		tags.append("</miejscowosc_urodzenia>");
-
+		tags.append(tag("kreskalubnie", "-"));
+		tags.append(tag("ilube", "ę"));
+		tags.append(tag("dzien_miesiac_urodzenia", DateUtils
+				.extractDayMonth(student.getBirthDate())));
+		tags.append(tag("rok_urodzenia", DateUtils.extractYear(student
+				.getBirthDate())));
+		tags.append(tag("miejscowosc_urodzenia", student.getBirthCity()));
 		tags.append(tag("wojewodztwo_urodzenia", student.getBirthRegion()));
-
 		tags.append(tag("w_zakresie_gry_na", student.getSpeciality()));
 
 		tags.append(markTags(student));
 
-		tags.append("</uczen>");
+		tags.append(closeTag("uczen"));
 
 		return tags.toString();
 	}
@@ -204,20 +174,20 @@ public class XmlExporter {
 	private static String studentNumberTags(Student student) {
 		StringBuffer tags = new StringBuffer();
 
-		tags.append("<numer_ucznia>");
+		tags.append(openTag("numer_ucznia"));
 
 		if (student.getNumber() != null) {
 			tags.append(Integer.toString(student.getNumber()));
 		}
 
-		tags.append("</numer_ucznia>");
+		tags.append(closeTag("numer_ucznia"));
 
 		return tags.toString();
 	}
 
 	private static String markTags(Student student) {
 		StringBuffer tags = new StringBuffer();
-		tags.append("<oceny>");
+		tags.append(openTag("oceny"));
 
 		for (String markKey : student.getMarks().keySet()) {
 			String tag = markKey.replaceAll(" ", "");
@@ -236,7 +206,7 @@ public class XmlExporter {
 		tags.append(tag("przedmiot16", "instrument główny - "
 				+ student.getInstrument()));
 
-		tags.append("</oceny>");
+		tags.append(closeTag("oceny"));
 
 		return tags.toString();
 	}
@@ -246,7 +216,7 @@ public class XmlExporter {
 
 		StringBuffer tags = new StringBuffer();
 
-		tags.append("<szczegolne_osiagniecia>");
+		tags.append(openTag("szczegolne_osiagniecia"));
 
 		boolean isFirst = true;
 		for (String achievement : student.getAchievements()) {
@@ -260,7 +230,7 @@ public class XmlExporter {
 			tags.append(achievement);
 		}
 
-		tags.append("</szczegolne_osiagniecia>");
+		tags.append(closeTag("szczegolne_osiagniecia"));
 
 		return tags.toString();
 	}
