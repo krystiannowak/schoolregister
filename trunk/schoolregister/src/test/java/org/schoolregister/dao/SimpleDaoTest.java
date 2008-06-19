@@ -8,6 +8,11 @@ import org.hibernate.*;
 import org.hibernate.cfg.*;
 import org.schoolregister.bo.*;
 
+/**
+ * 
+ * @author krystian
+ * 
+ */
 public class SimpleDaoTest extends TestCase {
 	public void testHibernateConfig() {
 		AnnotationConfiguration cfg = new AnnotationConfiguration();

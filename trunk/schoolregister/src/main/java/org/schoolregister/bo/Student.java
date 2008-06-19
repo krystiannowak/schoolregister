@@ -1,5 +1,10 @@
 package org.schoolregister.bo;
 
+/**
+ * 
+ * @author krystian
+ * 
+ */
 public interface Student {
 
 	public Long getId();
