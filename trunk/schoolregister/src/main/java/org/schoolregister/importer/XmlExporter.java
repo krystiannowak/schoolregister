@@ -85,9 +85,16 @@ public class XmlExporter {
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"\" ?>\n");
 
-		writer.write("<swiadectwo wzor=\"" + wzor + "\" wzorArkusza=\""
-				+ wzorArkusza + "\" czyGotowe=\"" + Boolean.toString(isReady)
-				+ "\">" + studentTags(student) + unitTags() + "</swiadectwo>");
+		final String CERTIFICATE_TAG = "swiadectwo";
+
+		writer.write("<" + CERTIFICATE_TAG + " wzor=\"" + wzor
+				+ "\" wzorArkusza=\"" + wzorArkusza + "\" czyGotowe=\""
+				+ Boolean.toString(isReady) + "\">");
+
+		writer.write(studentTags(student));
+		writer.write(unitTags());
+
+		writer.write(closeTag(CERTIFICATE_TAG));
 
 		writer.flush();
 	}
@@ -120,7 +127,9 @@ public class XmlExporter {
 	private static String unitTags() {
 		StringBuffer tags = new StringBuffer();
 
-		tags.append(openTag("jednostka"));
+		final String UNIT_TAG = "jednostka";
+
+		tags.append(openTag(UNIT_TAG));
 
 		tags.append(tag("nazwa_placowki1", ""));
 		tags.append(tag("nazwa_placowki2", "Poznańską"));
@@ -135,7 +144,7 @@ public class XmlExporter {
 		tags.append(tag("rok_szkolny1", "2007"));
 		tags.append(tag("rok_szkolny2", "2008"));
 
-		tags.append(closeTag("jednostka"));
+		tags.append(closeTag(UNIT_TAG));
 
 		return tags.toString();
 	}
@@ -143,7 +152,9 @@ public class XmlExporter {
 	private static String studentTags(Student student) {
 		StringBuffer tags = new StringBuffer();
 
-		tags.append(openTag("uczen"));
+		final String STUDENT_TAG = "uczen";
+
+		tags.append(openTag(STUDENT_TAG));
 
 		tags.append(studentNumberTags(student));
 
@@ -166,7 +177,7 @@ public class XmlExporter {
 
 		tags.append(markTags(student));
 
-		tags.append(closeTag("uczen"));
+		tags.append(closeTag(STUDENT_TAG));
 
 		return tags.toString();
 	}
@@ -174,20 +185,25 @@ public class XmlExporter {
 	private static String studentNumberTags(Student student) {
 		StringBuffer tags = new StringBuffer();
 
-		tags.append(openTag("numer_ucznia"));
+		final String STUDENT_NO_TAG = "numer_ucznia";
+
+		tags.append(openTag(STUDENT_NO_TAG));
 
 		if (student.getNumber() != null) {
 			tags.append(Integer.toString(student.getNumber()));
 		}
 
-		tags.append(closeTag("numer_ucznia"));
+		tags.append(closeTag(STUDENT_NO_TAG));
 
 		return tags.toString();
 	}
 
 	private static String markTags(Student student) {
 		StringBuffer tags = new StringBuffer();
-		tags.append(openTag("oceny"));
+
+		final String MARKS_TAG = "oceny";
+
+		tags.append(openTag(MARKS_TAG));
 
 		for (String markKey : student.getMarks().keySet()) {
 			String tag = markKey.replaceAll(" ", "");
@@ -206,7 +222,7 @@ public class XmlExporter {
 		tags.append(tag("przedmiot16", "instrument główny - "
 				+ student.getInstrument()));
 
-		tags.append(closeTag("oceny"));
+		tags.append(closeTag(MARKS_TAG));
 
 		return tags.toString();
 	}
@@ -216,7 +232,9 @@ public class XmlExporter {
 
 		StringBuffer tags = new StringBuffer();
 
-		tags.append(openTag("szczegolne_osiagniecia"));
+		final String ACHIEVEMENTS_TAG = "szczegolne_osiagniecia";
+
+		tags.append(openTag(ACHIEVEMENTS_TAG));
 
 		boolean isFirst = true;
 		for (String achievement : student.getAchievements()) {
@@ -230,7 +248,7 @@ public class XmlExporter {
 			tags.append(achievement);
 		}
 
-		tags.append(closeTag("szczegolne_osiagniecia"));
+		tags.append(closeTag(ACHIEVEMENTS_TAG));
 
 		return tags.toString();
 	}
