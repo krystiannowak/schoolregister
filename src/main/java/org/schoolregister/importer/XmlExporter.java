@@ -5,6 +5,8 @@ import java.nio.charset.*;
 import java.util.*;
 
 import org.apache.commons.lang.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 
@@ -12,6 +14,9 @@ import org.apache.commons.lang.*;
  * 
  */
 public class XmlExporter {
+
+	private static final Log LOG = LogFactory.getLog(XmlExporter.class);
+
 	public static void writeXml(List<Student> students, File dir)
 			throws IOException {
 		if (!dir.exists()) {
@@ -35,7 +40,7 @@ public class XmlExporter {
 			throws IOException {
 		String fileName = student.getLastName() + " " + student.getFirstNames()
 				+ ".xml";
-		System.out.println("generating file " + fileName);
+		LOG.info("generating file " + fileName);
 		File file = new File(dir, fileName);
 		if (file.exists()) {
 

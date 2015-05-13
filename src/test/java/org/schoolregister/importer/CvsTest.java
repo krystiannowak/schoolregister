@@ -3,8 +3,10 @@ package org.schoolregister.importer;
 import java.io.*;
 import java.util.*;
 
-import au.com.bytecode.opencsv.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import au.com.bytecode.opencsv.*;
 import junit.framework.*;
 
 /**
@@ -13,12 +15,15 @@ import junit.framework.*;
  * 
  */
 public class CvsTest extends TestCase {
+
+	private Log log = LogFactory.getLog(getClass());
+
 	public void testParse() throws IOException {
 		String input = "4;3;;5;6;;;4;4;;;";
 
 		StringTokenizer t = new StringTokenizer(input, ";");
 		for (int i = 0; t.hasMoreTokens(); i++) {
-			System.out.println("token #" + i + " = " + t.nextToken());
+			log.info("token #" + i + " = " + t.nextToken());
 		}
 
 		CSVReader r = new CSVReader(new InputStreamReader(
@@ -26,7 +31,7 @@ public class CvsTest extends TestCase {
 		String[] x = r.readNext();
 		int j = 0;
 		for (String y : x) {
-			System.out.println("token #" + j + " = " + y);
+			log.info("token #" + j + " = " + y);
 			j++;
 		}
 	}
