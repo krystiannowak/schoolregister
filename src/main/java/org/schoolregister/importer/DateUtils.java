@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class DateUtils {

@@ -2,7 +2,7 @@ package org.schoolregister.bo;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public interface Student {

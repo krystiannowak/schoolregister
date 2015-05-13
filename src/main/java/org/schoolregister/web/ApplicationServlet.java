@@ -2,7 +2,7 @@ package org.schoolregister.web;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class ApplicationServlet {

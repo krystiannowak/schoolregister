@@ -14,6 +14,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Krystian Nowak
+ * 
+ */
 public class StudentImportTest {
 
 	private static final String BUILD_DIR = System.getProperty("buildDir", ".");

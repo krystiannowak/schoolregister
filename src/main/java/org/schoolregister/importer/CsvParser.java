@@ -11,7 +11,7 @@ import au.com.bytecode.opencsv.*;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class CsvParser {
@@ -113,8 +113,8 @@ public class CsvParser {
 	public List<Student> parseFile(InputStream is) throws IOException {
 		List<Student> students = new ArrayList<Student>();
 
-		InputStreamReader isr = new InputStreamReader(is, Charset
-				.forName("windows-1250"));
+		InputStreamReader isr = new InputStreamReader(is,
+				Charset.forName("windows-1250"));
 
 		CSVReader r = new CSVReader(isr, ';');
 		List<String[]> lines = r.readAll();

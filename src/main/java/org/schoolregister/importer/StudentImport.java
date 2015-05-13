@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class StudentImport {

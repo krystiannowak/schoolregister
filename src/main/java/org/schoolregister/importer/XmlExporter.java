@@ -8,7 +8,7 @@ import org.apache.commons.lang.*;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class XmlExporter {
@@ -167,10 +167,10 @@ public class XmlExporter {
 
 		tags.append(tag("kreskalubnie", "-"));
 		tags.append(tag("ilube", "ę"));
-		tags.append(tag("dzien_miesiac_urodzenia", DateUtils
-				.extractDayMonth(student.getBirthDate())));
-		tags.append(tag("rok_urodzenia", DateUtils.extractYear(student
-				.getBirthDate())));
+		tags.append(tag("dzien_miesiac_urodzenia",
+				DateUtils.extractDayMonth(student.getBirthDate())));
+		tags.append(tag("rok_urodzenia",
+				DateUtils.extractYear(student.getBirthDate())));
 		tags.append(tag("miejscowosc_urodzenia", student.getBirthCity()));
 		tags.append(tag("wojewodztwo_urodzenia", student.getBirthRegion()));
 		tags.append(tag("w_zakresie_gry_na", student.getSpeciality()));
@@ -219,8 +219,8 @@ public class XmlExporter {
 
 		// to some customized config with template
 		// e.g. przedmiot16=instrument główny - ${student.instrument}
-		tags.append(tag("przedmiot16", "instrument główny - "
-				+ student.getInstrument()));
+		tags.append(tag("przedmiot16",
+				"instrument główny - " + student.getInstrument()));
 
 		tags.append(closeTag(MARKS_TAG));
 

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 @Entity

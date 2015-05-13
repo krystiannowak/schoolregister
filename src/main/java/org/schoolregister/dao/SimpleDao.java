@@ -2,7 +2,7 @@ package org.schoolregister.dao;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class SimpleDao {

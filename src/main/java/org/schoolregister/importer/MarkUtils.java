@@ -2,7 +2,7 @@ package org.schoolregister.importer;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class MarkUtils {

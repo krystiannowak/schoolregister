@@ -10,7 +10,7 @@ import org.schoolregister.bo.*;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class SimpleDaoTest extends TestCase {

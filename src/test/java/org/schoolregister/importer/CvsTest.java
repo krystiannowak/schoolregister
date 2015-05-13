@@ -9,7 +9,7 @@ import junit.framework.*;
 
 /**
  * 
- * @author krystian
+ * @author Krystian Nowak
  * 
  */
 public class CvsTest extends TestCase {
