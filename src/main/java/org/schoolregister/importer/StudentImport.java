@@ -34,16 +34,13 @@ public class StudentImport {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new StudentImport()
-				.doImport(
-						new FileInputStream(
-								"D:\\devel\\schoolregister\\src\\test\\resources\\org\\schoolregister\\importer\\input.csv"),
-						new File("c:\\_s\\ee"));
+		if (args.length != 2) {
+			System.out
+					.println("usage: java -jar jarfile.jar input.csv outputDir");
+		} else {
+			new StudentImport().doImport(new FileInputStream(args[0]),
+					new File(args[1]));
+		}
 	}
-
-	// public static void main(String[] args) throws Exception {
-	// new StudentImport().doImport(new FileInputStream("c:\\_s\\Dane.csv"),
-	// new File("c:\\_s\\e"));
-	// }
 
 }
