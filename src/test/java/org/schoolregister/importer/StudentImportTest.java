@@ -16,6 +16,8 @@ import org.junit.Test;
 
 public class StudentImportTest {
 
+	private static final String BUILD_DIR = System.getProperty("buildDir", ".");
+
 	private static final boolean KEEP_TEMP_DIR = true;
 
 	private Log log = LogFactory.getLog(getClass());
@@ -25,7 +27,8 @@ public class StudentImportTest {
 	@Before
 	public void setUp() throws Exception {
 
-		workDir = new File(getClass().getName() + "_temp_dir");
+		workDir = new File(new File(BUILD_DIR).getCanonicalFile(), getClass()
+				.getName() + "_temp_dir");
 		workDir.mkdir();
 
 		log.debug("work dir abs path = " + workDir.getAbsolutePath());
@@ -36,6 +39,8 @@ public class StudentImportTest {
 		if (!KEEP_TEMP_DIR) {
 			FileUtils.deleteDirectory(workDir);
 			Assert.assertFalse(workDir.exists());
+		} else {
+			log.info("output kept in: " + workDir.getAbsolutePath());
 		}
 	}
 
