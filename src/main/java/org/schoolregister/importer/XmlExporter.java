@@ -73,22 +73,23 @@ public class XmlExporter {
 
 		boolean isReady = false;
 
-		// String wzor = "MENiS-I/9/2";
-		// String wzorArkusza = "MENiS-I/110/2";
-
 		String wzor;
+		String styleSheet;
 
 		// to config file?
 		if (student.isExceptional()) {
-			wzor = "ART-II/220-w/3";
+			wzor = "ART-II/201-w/3";
+			styleSheet = "../../../szablony/ART-II_201-w_3_1.xsl";
 		} else {
-			wzor = "ART-II/220/3";
+			wzor = "ART-II/201/3";
+			styleSheet = "../../../szablony/ART-II_201_3_1.xsl";
 		}
 
 		String wzorArkusza = "ART-II/280/3";
 
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"\" ?>\n");
+		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"" + styleSheet
+				+ "\" ?>\n");
 
 		final String CERTIFICATE_TAG = "swiadectwo";
 
@@ -98,6 +99,7 @@ public class XmlExporter {
 
 		writer.write(studentTags(student));
 		writer.write(unitTags());
+		writer.write(classTags());
 
 		writer.write(closeTag(CERTIFICATE_TAG));
 
@@ -136,20 +138,37 @@ public class XmlExporter {
 
 		tags.append(openTag(UNIT_TAG));
 
-		tags.append(tag("nazwa_placowki1", ""));
-		tags.append(tag("nazwa_placowki2", "Poznańską"));
-		tags.append(tag("rok_wystawienia", "2008"));
-		tags.append(tag("dzien_miesiac_wystawienia", "19 czerwca"));
+		tags.append(tag("typ_szkoly", "czwartej szkoły podstawowej"));
+		tags.append(tag("nazwa_placowki1",
+				"Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia"));
+		tags.append(tag("rok_wystawienia", "2015"));
+		tags.append(tag("dzien_miesiac_wystawienia", "24 czerwca"));
 		tags.append(tag("miejscowosc_wystawienia", "Poznań"));
-		tags.append(tag("rok_rady", "2008"));
-		tags.append(tag("dzien_miesiac_rady", "14 czerwca"));
+		tags.append(tag("rok_rady", "2015"));
+		tags.append(tag("dzien_miesiac_rady", "23 czerwca"));
 		tags.append(tag("wojewodztwo", "wielkopolskie"));
 		tags.append(tag("miejscowosc", "Poznaniu"));
 		tags.append(tag("imie_szkoly", "Henryka Wieniawskiego"));
-		tags.append(tag("rok_szkolny1", "2007"));
-		tags.append(tag("rok_szkolny2", "2008"));
+		tags.append(tag("rok_szkolny1", "2014"));
+		tags.append(tag("rok_szkolny2", "2015"));
 
 		tags.append(closeTag(UNIT_TAG));
+
+		return tags.toString();
+	}
+
+	// to ini file?
+	private static String classTags() {
+		StringBuffer tags = new StringBuffer();
+
+		final String CLASS_TAG = "klasa";
+
+		tags.append(openTag(CLASS_TAG));
+
+		tags.append(tag("promowany_do_klasy", "piątej"));
+		tags.append(tag("uczeszczal_do_klasy", "IVa"));
+
+		tags.append(closeTag(CLASS_TAG));
 
 		return tags.toString();
 	}
@@ -178,7 +197,7 @@ public class XmlExporter {
 				DateUtils.extractYear(student.getBirthDate())));
 		tags.append(tag("miejscowosc_urodzenia", student.getBirthCity()));
 		tags.append(tag("wojewodztwo_urodzenia", student.getBirthRegion()));
-		tags.append(tag("w_zakresie_gry_na", student.getSpeciality()));
+		tags.append(tag("cykl_wydzial", student.getSpeciality()));
 
 		tags.append(markTags(student));
 

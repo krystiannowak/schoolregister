@@ -22,7 +22,7 @@ public class CsvParser {
 	private static final String KEY_BIRTH_REGION = "wojewodztwo_urodzenia";
 	private static final String KEY_EXCEPTIONAL = "wyroznienie";
 	private static final String KEY_STUDENT_NUMBER = "numer_ucznia";
-	private static final String KEY_SPECIALITY = "w_zakresie_gry_na";
+	private static final String KEY_SPECIALITY = "cykl_wydzial";
 	private static final String KEY_INSTRUMENT = "instrument";
 	private static final String KEY_ACHIEVEMENTS = "szczegolne_osiagniecia";
 
