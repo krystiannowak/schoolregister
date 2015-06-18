@@ -1,6 +1,10 @@
 package org.schoolregister.importer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -8,6 +12,9 @@ import java.util.*;
  * 
  */
 public class Student {
+
+	private String pesel;
+
 	// for future
 	private boolean isNameDeclinable;
 
@@ -18,8 +25,6 @@ public class Student {
 	private Calendar birthDate;
 
 	private String birthCity;
-
-	private String birthRegion;
 
 	private String speciality;
 
@@ -32,6 +37,14 @@ public class Student {
 	private Map<String, String> marks = new HashMap<String, String>();
 
 	private List<String> achievements = new ArrayList<String>();
+
+	public String getPesel() {
+		return pesel;
+	}
+
+	public void setPesel(String pesel) {
+		this.pesel = pesel;
+	}
 
 	public boolean isFemale() {
 		return getFirstNames().endsWith("a");
@@ -87,14 +100,6 @@ public class Student {
 
 	public void setNumber(Integer number) {
 		this.number = number;
-	}
-
-	public String getBirthRegion() {
-		return birthRegion;
-	}
-
-	public void setBirthRegion(String birthRegion) {
-		this.birthRegion = birthRegion;
 	}
 
 	public String getSpeciality() {

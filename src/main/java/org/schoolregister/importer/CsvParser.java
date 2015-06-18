@@ -15,11 +15,11 @@ import au.com.bytecode.opencsv.*;
  * 
  */
 public class CsvParser {
+	private static final String KEY_PESEL = "pesel";
 	private static final String KEY_LAST_NAME = "nazwisko";
 	private static final String KEY_FIRST_NAME = "imie";
 	private static final String KEY_BIRTH_DATE = "data_urodzenia";
-	private static final String KEY_BIRTH_CITY = "miejscowosc_urodzenia";
-	private static final String KEY_BIRTH_REGION = "wojewodztwo_urodzenia";
+	private static final String KEY_BIRTH_CITY = "miejscowosc_urodzenia_m";
 	private static final String KEY_EXCEPTIONAL = "wyroznienie";
 	private static final String KEY_STUDENT_NUMBER = "numer_ucznia";
 	private static final String KEY_SPECIALITY = "cykl_wydzial";
@@ -36,7 +36,9 @@ public class CsvParser {
 	}
 
 	private void fillStudent(Student student, String key, String value) {
-		if (KEY_LAST_NAME.equalsIgnoreCase(key)) {
+		if (KEY_PESEL.equalsIgnoreCase(key)) {
+			student.setPesel(value);
+		} else if (KEY_LAST_NAME.equalsIgnoreCase(key)) {
 			student.setLastName(value);
 		} else if (KEY_FIRST_NAME.equalsIgnoreCase(key)) {
 			student.setFirstNames(value);
@@ -48,8 +50,6 @@ public class CsvParser {
 			student.setExceptional("TAK".equalsIgnoreCase(value));
 		} else if (KEY_STUDENT_NUMBER.equalsIgnoreCase(key)) {
 			putNumber(student, value);
-		} else if (KEY_BIRTH_REGION.equalsIgnoreCase(key)) {
-			student.setBirthRegion(value);
 		} else if (KEY_SPECIALITY.equalsIgnoreCase(key)) {
 			student.setSpeciality(value);
 		} else if (KEY_INSTRUMENT.equalsIgnoreCase(key)) {

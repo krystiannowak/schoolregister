@@ -78,14 +78,14 @@ public class XmlExporter {
 
 		// to config file?
 		if (student.isExceptional()) {
-			wzor = "ART-II/201-w/3";
-			styleSheet = "../../../szablony/ART-II_201-w_3_1.xsl";
+			wzor = "ART-II/201-w/3-15.03.2012";
+			styleSheet = "../../../szablony/ART-II_201-w_3-15.03.2012_1.xsl";
 		} else {
-			wzor = "ART-II/201/3";
-			styleSheet = "../../../szablony/ART-II_201_3_1.xsl";
+			wzor = "ART-II/201/3-15.03.2012";
+			styleSheet = "../../../szablony/ART-II_201_3-15.03.2012_1.xsl";
 		}
 
-		String wzorArkusza = "ART-II/280/3";
+		String wzorArkusza = "ART-II/280/3-15.03.2012";
 
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"" + styleSheet
@@ -142,10 +142,10 @@ public class XmlExporter {
 		tags.append(tag("nazwa_placowki1",
 				"Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia"));
 		tags.append(tag("rok_wystawienia", "2015"));
-		tags.append(tag("dzien_miesiac_wystawienia", "24 czerwca"));
+		tags.append(tag("dzien_miesiac_wystawienia", "26 czerwca"));
 		tags.append(tag("miejscowosc_wystawienia", "Poznań"));
 		tags.append(tag("rok_rady", "2015"));
-		tags.append(tag("dzien_miesiac_rady", "23 czerwca"));
+		tags.append(tag("dzien_miesiac_rady", "22 czerwca"));
 		tags.append(tag("wojewodztwo", "wielkopolskie"));
 		tags.append(tag("miejscowosc", "Poznaniu"));
 		tags.append(tag("imie_szkoly", "Henryka Wieniawskiego"));
@@ -182,6 +182,7 @@ public class XmlExporter {
 
 		tags.append(studentNumberTags(student));
 
+		tags.append(tag("pesel", student.getPesel()));
 		tags.append(tag("imie_nazwisko", student.getFirstNames() + " "
 				+ student.getLastName()));
 
@@ -195,8 +196,7 @@ public class XmlExporter {
 				DateUtils.extractDayMonth(student.getBirthDate())));
 		tags.append(tag("rok_urodzenia",
 				DateUtils.extractYear(student.getBirthDate())));
-		tags.append(tag("miejscowosc_urodzenia", student.getBirthCity()));
-		tags.append(tag("wojewodztwo_urodzenia", student.getBirthRegion()));
+		tags.append(tag("miejscowosc_urodzenia_m", student.getBirthCity()));
 		tags.append(tag("cykl_wydzial", student.getSpeciality()));
 
 		tags.append(markTags(student));
