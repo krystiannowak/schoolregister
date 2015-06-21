@@ -140,7 +140,7 @@ public class XmlExporter {
 
 		tags.append(tag("typ_szkoly", "czwartej szkoły podstawowej"));
 		tags.append(tag("nazwa_placowki1",
-				"Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia"));
+				"Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia nr 1"));
 		tags.append(tag("rok_wystawienia", "2015"));
 		tags.append(tag("dzien_miesiac_wystawienia", "26 czerwca"));
 		tags.append(tag("miejscowosc_wystawienia", "Poznań"));
