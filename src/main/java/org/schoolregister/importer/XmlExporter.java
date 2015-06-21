@@ -243,7 +243,7 @@ public class XmlExporter {
 
 		// to some customized config with template
 		// e.g. przedmiot16=instrument główny - ${student.instrument}
-		tags.append(tag("przedmiot16",
+		tags.append(tag("przedmiot18",
 				"instrument główny - " + student.getInstrument()));
 
 		tags.append(closeTag(MARKS_TAG));
@@ -281,28 +281,24 @@ public class XmlExporter {
 
 	static {
 		SUBJECT_MAPPING.put("przedmiot1", "język polski");
-		SUBJECT_MAPPING.put("przedmiot2", "historia");
-		SUBJECT_MAPPING.put("przedmiot3", "język angielski");
+		SUBJECT_MAPPING.put("przedmiot2", "język angielski");
+		SUBJECT_MAPPING.put("przedmiot3", "historia i społeczeństwo");
 		SUBJECT_MAPPING.put("przedmiot4", "przyroda");
 		SUBJECT_MAPPING.put("przedmiot5", "matematyka");
-		SUBJECT_MAPPING.put("przedmiot6", "informatyka");
-		SUBJECT_MAPPING.put("przedmiot7", "plastyka");
-		SUBJECT_MAPPING.put("przedmiot8", "wychowanie fizyczne");
+		SUBJECT_MAPPING.put("przedmiot6", "zajęcia komputerowe");
+		SUBJECT_MAPPING.put("przedmiot7", "zajęcia techniczne");
+		SUBJECT_MAPPING.put("przedmiot8", "plastyka");
+		SUBJECT_MAPPING.put("przedmiot9", "wychowanie fizyczne");
 
-		// SUBJECT_MAPPING.put("przedmiot16", "instrument główny - ...");
-		SUBJECT_MAPPING.put("przedmiot17", "fortepian dodatkowy");
-		SUBJECT_MAPPING.put("przedmiot18", "instrument dodatkowy");
-		SUBJECT_MAPPING.put("przedmiot19", "kształcenie słuchu");
-		SUBJECT_MAPPING.put("przedmiot20", "rytmika");
-		SUBJECT_MAPPING.put("przedmiot21", "audycje muzyczne");
-		SUBJECT_MAPPING.put("przedmiot22", "chór");
-		SUBJECT_MAPPING.put("przedmiot23", "orkiestra");
-		SUBJECT_MAPPING.put("przedmiot24", "zespół kameralny");
+		SUBJECT_MAPPING.put("przedmiot16", "kształcenie słuchu");
+		SUBJECT_MAPPING.put("przedmiot17", "audycje muzyczne");
+		// SUBJECT_MAPPING.put("przedmiot18", "instrument główny - ...");
+		SUBJECT_MAPPING.put("przedmiot21", "");
+		SUBJECT_MAPPING.put("przedmiot19", "chór");
+		SUBJECT_MAPPING.put("przedmiot20", "orkiestra");
+		SUBJECT_MAPPING.put("przedmiot21", "zespół kameralny");
 
 		SUBJECT_MAPPING.put("zajecia_dodatkowe1", "język niemiecki");
-		SUBJECT_MAPPING.put("zajecia_dodatkowe2",
-				"wychowanie do życia w rodzinie");
-		SUBJECT_MAPPING.put("zajecia_dodatkowe3", "rytmika dodatkowa");
 	}
 
 	private static String subjectTags() {
