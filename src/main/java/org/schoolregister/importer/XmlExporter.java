@@ -166,7 +166,7 @@ public class XmlExporter {
 		tags.append(openTag(CLASS_TAG));
 
 		tags.append(tag("promowany_do_klasy", "piątej"));
-		tags.append(tag("uczeszczal_do_klasy", "IVa"));
+		tags.append(tag("uczeszczal_do_klasy", "czwartej"));
 
 		tags.append(closeTag(CLASS_TAG));
 
