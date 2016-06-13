@@ -128,7 +128,7 @@
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.7</version> <!-- change to 1.8.0.10 when in repo -->
+			<version>1.8.0.10</version>
 		</dependency>
 		<dependency>
 			<groupId>c3p0</groupId>
@@ -138,12 +138,12 @@
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
-			<version>1.0.1B</version> <!-- change to 1.1 when in repo -->
+			<version>1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
-			<version>2.1_3</version> <!-- change to 2.2 when in repo -->
+			<version>2.1_3</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
