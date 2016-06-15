@@ -17,17 +17,14 @@ public class XmlExporter {
 
 	private static final Log LOG = LogFactory.getLog(XmlExporter.class);
 
-	public static void writeXml(List<Student> students, File dir)
-			throws IOException {
+	public static void writeXml(List<Student> students, File dir) throws IOException {
 		if (!dir.exists()) {
 			if (!dir.mkdir()) {
-				throw new IOException("cannot create directory "
-						+ dir.getAbsolutePath());
+				throw new IOException("cannot create directory " + dir.getAbsolutePath());
 			}
 		} else {
 			if (!dir.isDirectory()) {
-				throw new IOException("dir " + dir.getAbsolutePath()
-						+ " is not a directory");
+				throw new IOException("dir " + dir.getAbsolutePath() + " is not a directory");
 			}
 		}
 
@@ -36,27 +33,22 @@ public class XmlExporter {
 		}
 	}
 
-	private static void writeXmlForStudent(Student student, File dir)
-			throws IOException {
-		String fileName = student.getLastName() + " " + student.getFirstNames()
-				+ ".xml";
+	private static void writeXmlForStudent(Student student, File dir) throws IOException {
+		String fileName = student.getLastName() + " " + student.getFirstNames() + ".xml";
 		LOG.info("generating file " + fileName);
 		File file = new File(dir, fileName);
 		if (file.exists()) {
 
 			if (!file.isFile()) {
 				if (file.isDirectory()) {
-					throw new IOException("file " + file.getAbsolutePath()
-							+ " should not be a directory");
+					throw new IOException("file " + file.getAbsolutePath() + " should not be a directory");
 				} else {
-					throw new IOException("file " + file.getAbsolutePath()
-							+ " not be a normal file");
+					throw new IOException("file " + file.getAbsolutePath() + " not be a normal file");
 				}
 			}
 
 			if (!file.delete()) {
-				throw new IOException("cannot delete old file "
-						+ file.getAbsolutePath());
+				throw new IOException("cannot delete old file " + file.getAbsolutePath());
 			}
 		}
 
@@ -66,10 +58,8 @@ public class XmlExporter {
 		os.close();
 	}
 
-	private static void writeXmlForStudent(Student student, OutputStream os)
-			throws IOException {
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os,
-				Charset.forName("UTF-8")));
+	private static void writeXmlForStudent(Student student, OutputStream os) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, Charset.forName("UTF-8")));
 
 		boolean isReady = false;
 
@@ -88,13 +78,11 @@ public class XmlExporter {
 		String wzorArkusza = "ART-II/280/3-15.03.2012";
 
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"" + styleSheet
-				+ "\" ?>\n");
+		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"" + styleSheet + "\" ?>\n");
 
 		final String CERTIFICATE_TAG = "swiadectwo";
 
-		writer.write("<" + CERTIFICATE_TAG + " wzor=\"" + wzor
-				+ "\" wzorArkusza=\"" + wzorArkusza + "\" czyGotowe=\""
+		writer.write("<" + CERTIFICATE_TAG + " wzor=\"" + wzor + "\" wzorArkusza=\"" + wzorArkusza + "\" czyGotowe=\""
 				+ Boolean.toString(isReady) + "\">");
 
 		writer.write(studentTags(student));
@@ -139,8 +127,7 @@ public class XmlExporter {
 		tags.append(openTag(UNIT_TAG));
 
 		tags.append(tag("typ_szkoly", "piątej szkoły podstawowej"));
-		tags.append(tag("nazwa_placowki1",
-				"Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia nr 1"));
+		tags.append(tag("nazwa_placowki1", "Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia nr 1"));
 		tags.append(tag("rok_wystawienia", "2016"));
 		tags.append(tag("dzien_miesiac_wystawienia", "24 czerwca"));
 		tags.append(tag("miejscowosc_wystawienia", "Poznań"));
@@ -183,8 +170,7 @@ public class XmlExporter {
 		tags.append(studentNumberTags(student));
 
 		tags.append(tag("pesel", student.getPesel()));
-		tags.append(tag("imie_nazwisko", student.getFirstNames() + " "
-				+ student.getLastName()));
+		tags.append(tag("imie_nazwisko", student.getFirstNames() + " " + student.getLastName()));
 
 		tags.append(tag("aluby", student.isFemale() ? "a" : "y"));
 		tags.append(tag("alubkreska", student.isFemale() ? "a" : "-"));
@@ -192,10 +178,8 @@ public class XmlExporter {
 
 		tags.append(tag("kreskalubnie", "-"));
 		tags.append(tag("ilube", "ę"));
-		tags.append(tag("dzien_miesiac_urodzenia",
-				DateUtils.extractDayMonth(student.getBirthDate())));
-		tags.append(tag("rok_urodzenia",
-				DateUtils.extractYear(student.getBirthDate())));
+		tags.append(tag("dzien_miesiac_urodzenia", DateUtils.extractDayMonth(student.getBirthDate())));
+		tags.append(tag("rok_urodzenia", DateUtils.extractYear(student.getBirthDate())));
 		tags.append(tag("miejscowosc_urodzenia_m", student.getBirthCity()));
 		tags.append(tag("cykl_wydzial", student.getSpeciality()));
 
@@ -239,12 +223,11 @@ public class XmlExporter {
 
 		tags.append(subjectTags());
 
-		tags.append(achievementsTags(student));
-
 		// to some customized config with template
 		// e.g. przedmiot16=instrument główny - ${student.instrument}
-		tags.append(tag("przedmiot18",
-				"instrument główny - " + student.getInstrument()));
+		tags.append(tag("przedmiot16", "instrument główny - " + student.getInstrument()));
+
+		tags.append(achievementsTags(student));
 
 		tags.append(closeTag(MARKS_TAG));
 
@@ -277,7 +260,7 @@ public class XmlExporter {
 		return tags.toString();
 	}
 
-	private static final Map<String, String> SUBJECT_MAPPING = new HashMap<String, String>();
+	private static final Map<String, String> SUBJECT_MAPPING = new LinkedHashMap<>();
 
 	static {
 		SUBJECT_MAPPING.put("przedmiot1", "język polski");
@@ -289,14 +272,17 @@ public class XmlExporter {
 		SUBJECT_MAPPING.put("przedmiot7", "zajęcia techniczne");
 		SUBJECT_MAPPING.put("przedmiot8", "plastyka");
 		SUBJECT_MAPPING.put("przedmiot9", "wychowanie fizyczne");
+		SUBJECT_MAPPING.put("przedmiot10", "wychowanie do życia w rodzinie");
 
-		SUBJECT_MAPPING.put("przedmiot16", "kształcenie słuchu");
-		SUBJECT_MAPPING.put("przedmiot17", "audycje muzyczne");
-		// SUBJECT_MAPPING.put("przedmiot18", "instrument główny - ...");
-		SUBJECT_MAPPING.put("przedmiot21", "");
-		SUBJECT_MAPPING.put("przedmiot19", "chór");
-		SUBJECT_MAPPING.put("przedmiot20", "orkiestra");
-		SUBJECT_MAPPING.put("przedmiot21", "zespół kameralny");
+		// SUBJECT_MAPPING.put("przedmiot16", "instrument główny - ...");
+		SUBJECT_MAPPING.put("przedmiot17", "fortepian obowiązkowy");
+
+		SUBJECT_MAPPING.put("przedmiot18", "kształcenie słuchu");
+		SUBJECT_MAPPING.put("przedmiot19", "audycje muzyczne");
+
+		SUBJECT_MAPPING.put("przedmiot20", "chór");
+		SUBJECT_MAPPING.put("przedmiot21", "orkiestra");
+		SUBJECT_MAPPING.put("przedmiot22", "zespół kameralny");
 
 		SUBJECT_MAPPING.put("zajecia_dodatkowe1", "język niemiecki");
 	}

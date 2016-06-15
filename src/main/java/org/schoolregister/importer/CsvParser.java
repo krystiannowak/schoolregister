@@ -1,13 +1,20 @@
 package org.schoolregister.importer;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
-import org.apache.commons.collections.*;
-import org.apache.commons.lang.*;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
-import au.com.bytecode.opencsv.*;
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * 
@@ -26,7 +33,7 @@ public class CsvParser {
 	private static final String KEY_INSTRUMENT = "instrument";
 	private static final String KEY_ACHIEVEMENTS = "szczegolne_osiagniecia";
 
-	private Map<Integer, String> positionToKeyMap = new HashMap<Integer, String>();
+	private Map<Integer, String> positionToKeyMap = new LinkedHashMap<>();
 
 	private void parseHeader(List<String> line) {
 		int currentPosition = 0;
@@ -64,8 +71,7 @@ public class CsvParser {
 	private static void putAchievements(Student student, String value) {
 		if (!StringUtils.isEmpty(value)) {
 			final String ACHIEVEMENTS_SEPARATOR = "|";
-			StringTokenizer tokenizer = new StringTokenizer(value,
-					ACHIEVEMENTS_SEPARATOR);
+			StringTokenizer tokenizer = new StringTokenizer(value, ACHIEVEMENTS_SEPARATOR);
 
 			while (tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
@@ -113,8 +119,7 @@ public class CsvParser {
 	public List<Student> parseFile(InputStream is) throws IOException {
 		List<Student> students = new ArrayList<Student>();
 
-		InputStreamReader isr = new InputStreamReader(is,
-				Charset.forName("windows-1250"));
+		InputStreamReader isr = new InputStreamReader(is, Charset.forName("windows-1250"));
 
 		CSVReader r = new CSVReader(isr, ';');
 		List<String[]> lines = r.readAll();
