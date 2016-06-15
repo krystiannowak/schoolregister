@@ -138,19 +138,19 @@ public class XmlExporter {
 
 		tags.append(openTag(UNIT_TAG));
 
-		tags.append(tag("typ_szkoly", "czwartej szkoły podstawowej"));
+		tags.append(tag("typ_szkoly", "piątej szkoły podstawowej"));
 		tags.append(tag("nazwa_placowki1",
 				"Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia nr 1"));
-		tags.append(tag("rok_wystawienia", "2015"));
-		tags.append(tag("dzien_miesiac_wystawienia", "26 czerwca"));
+		tags.append(tag("rok_wystawienia", "2016"));
+		tags.append(tag("dzien_miesiac_wystawienia", "24 czerwca"));
 		tags.append(tag("miejscowosc_wystawienia", "Poznań"));
-		tags.append(tag("rok_rady", "2015"));
-		tags.append(tag("dzien_miesiac_rady", "22 czerwca"));
+		tags.append(tag("rok_rady", "2016"));
+		tags.append(tag("dzien_miesiac_rady", "20 czerwca"));
 		tags.append(tag("wojewodztwo", "wielkopolskie"));
 		tags.append(tag("miejscowosc", "Poznaniu"));
 		tags.append(tag("imie_szkoly", "Henryka Wieniawskiego"));
-		tags.append(tag("rok_szkolny1", "2014"));
-		tags.append(tag("rok_szkolny2", "2015"));
+		tags.append(tag("rok_szkolny1", "2015"));
+		tags.append(tag("rok_szkolny2", "2016"));
 
 		tags.append(closeTag(UNIT_TAG));
 
@@ -165,8 +165,8 @@ public class XmlExporter {
 
 		tags.append(openTag(CLASS_TAG));
 
-		tags.append(tag("promowany_do_klasy", "piątej"));
-		tags.append(tag("uczeszczal_do_klasy", "czwartej"));
+		tags.append(tag("promowany_do_klasy", "szóstej"));
+		tags.append(tag("uczeszczal_do_klasy", "piątej"));
 
 		tags.append(closeTag(CLASS_TAG));
 
