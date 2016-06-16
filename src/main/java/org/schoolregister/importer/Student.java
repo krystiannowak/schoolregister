@@ -30,6 +30,8 @@ public class Student {
 
 	private String instrument;
 
+	private String additionalInstrument;
+
 	private boolean exceptional;
 
 	private Integer number;
@@ -116,6 +118,14 @@ public class Student {
 
 	public void setInstrument(String instrument) {
 		this.instrument = instrument;
+	}
+
+	public String getAdditionalInstrument() {
+		return additionalInstrument;
+	}
+
+	public void setAdditionalInstrument(String additionalInstrument) {
+		this.additionalInstrument = additionalInstrument;
 	}
 
 	public List<String> getAchievements() {

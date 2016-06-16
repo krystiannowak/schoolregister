@@ -31,6 +31,7 @@ public class CsvParser {
 	private static final String KEY_STUDENT_NUMBER = "numer_ucznia";
 	private static final String KEY_SPECIALITY = "cykl_wydzial";
 	private static final String KEY_INSTRUMENT = "instrument";
+	private static final String KEY_ADDITIONAL_INSTRUMENT = "instrument_dodatkowy";
 	private static final String KEY_ACHIEVEMENTS = "szczegolne_osiagniecia";
 
 	private Map<Integer, String> positionToKeyMap = new LinkedHashMap<>();
@@ -61,6 +62,8 @@ public class CsvParser {
 			student.setSpeciality(value);
 		} else if (KEY_INSTRUMENT.equalsIgnoreCase(key)) {
 			student.setInstrument(value);
+		} else if (KEY_ADDITIONAL_INSTRUMENT.equalsIgnoreCase(key)) {
+			student.setAdditionalInstrument(value);
 		} else if (KEY_ACHIEVEMENTS.equalsIgnoreCase(key)) {
 			putAchievements(student, value);
 		} else {

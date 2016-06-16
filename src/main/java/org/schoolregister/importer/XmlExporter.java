@@ -1,12 +1,24 @@
 package org.schoolregister.importer;
 
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.apache.commons.lang.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.codepoetics.protonpack.Indexed;
+import com.codepoetics.protonpack.StreamUtils;
 
 /**
  * 
@@ -206,26 +218,60 @@ public class XmlExporter {
 		return tags.toString();
 	}
 
+	private static final String OPTIONAL_SUBJECT_PREFIX = "OPT:";
+
+	private static final String OPTIONAL_GRADE_TAG_PREFIX = "zajecia_dodatkowe_ocena";
+	private static final String OPTIONAL_SUBJECT_TAG_PREFIX = "zajecia_dodatkowe";
+
+	private static final Map<String, String> ADDITIONAL_SUBJECT_MAPPING = new LinkedHashMap<>();
+
+	static {
+		ADDITIONAL_SUBJECT_MAPPING.put("zajecia_dodatkowe_ocena1", "język niemiecki");
+		ADDITIONAL_SUBJECT_MAPPING.put("zajecia_dodatkowe_ocena2", "zespół rytmiki");
+		// ADDITIONAL_SUBJECT_MAPPING.put("zajecia_dodatkowe_ocena3",
+		// "instrument dodatkowy - ");
+	}
+
 	private static String markTags(Student student) {
+
+		Map<String, String> sorted = student.getMarks().entrySet().stream()
+				.filter(e -> e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX) && !StringUtils.isEmpty(e.getValue()))
+				.sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors
+						.toMap(e -> e.getKey().substring(OPTIONAL_SUBJECT_PREFIX.length()), Map.Entry::getValue));
+
+		Map<Long, Map.Entry<String, String>> indexed = StreamUtils.zipWithIndex(sorted.entrySet().stream())
+				.collect(Collectors.toMap(Indexed::getIndex, Indexed::getValue));
+
+		Map<String, String> gradeTags = indexed.entrySet().stream().collect(
+				Collectors.toMap(e -> OPTIONAL_GRADE_TAG_PREFIX + (e.getKey() + 1), e -> e.getValue().getValue()));
+
+		Map<String, String> subjectTags = indexed.entrySet().stream()
+				.collect(Collectors.toMap(e -> OPTIONAL_SUBJECT_TAG_PREFIX + (e.getKey() + 1), e -> {
+
+					String mappingLookup = e.getValue().getKey();
+					if ("zajecia_dodatkowe_ocena3".equals(mappingLookup)) {
+						return "instrument dodatkowy - " + student.getAdditionalInstrument();
+					} else {
+						return ADDITIONAL_SUBJECT_MAPPING.get(mappingLookup);
+					}
+
+				}));
+
 		StringBuffer tags = new StringBuffer();
 
 		final String MARKS_TAG = "oceny";
 
 		tags.append(openTag(MARKS_TAG));
 
-		for (String markKey : student.getMarks().keySet()) {
-			String tag = markKey.replaceAll(" ", "");
-			String mark = student.getMarks().get(markKey);
-			if (!StringUtils.isEmpty(mark)) {
-				tags.append(tag(tag, mark));
-			}
-		}
+		student.getMarks().entrySet().stream()
+				.filter(e -> !e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX) && !StringUtils.isEmpty(e.getValue()))
+				.forEach(e -> tags.append(tag(e.getKey().replaceAll(" ", ""), e.getValue())));
 
-		tags.append(subjectTags());
+		gradeTags.forEach((k, v) -> tags.append(tag(k.replaceAll(" ", ""), v)));
 
-		// to some customized config with template
-		// e.g. przedmiot16=instrument główny - ${student.instrument}
-		tags.append(tag("przedmiot16", "instrument główny - " + student.getInstrument()));
+		tags.append(subjectTags(student.getInstrument()));
+
+		subjectTags.forEach((k, v) -> tags.append(tag(k, v)));
 
 		tags.append(achievementsTags(student));
 
@@ -283,11 +329,9 @@ public class XmlExporter {
 		SUBJECT_MAPPING.put("przedmiot20", "chór");
 		SUBJECT_MAPPING.put("przedmiot21", "orkiestra");
 		SUBJECT_MAPPING.put("przedmiot22", "zespół kameralny");
-
-		SUBJECT_MAPPING.put("zajecia_dodatkowe1", "język niemiecki");
 	}
 
-	private static String subjectTags() {
+	private static String subjectTags(String mainInstrument) {
 		// TODO: from config?
 
 		StringBuffer tags = new StringBuffer();
@@ -296,6 +340,10 @@ public class XmlExporter {
 			String tagValue = SUBJECT_MAPPING.get(tagName);
 			tags.append(tag(tagName, tagValue));
 		}
+
+		// to some customized config with template
+		// e.g. przedmiot16=instrument główny - ${student.instrument}
+		tags.append(tag("przedmiot16", "instrument główny - " + mainInstrument));
 
 		return tags.toString();
 	}
