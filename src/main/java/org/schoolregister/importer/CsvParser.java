@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,12 +92,21 @@ public class CsvParser {
 		}
 	}
 
+	private static final Map<String, String> SHORT_MARKS_TO_FULL = new HashMap<>();
+
+	static {
+		SHORT_MARKS_TO_FULL.put("zw", "zwolniony");
+		SHORT_MARKS_TO_FULL.put("zal", "zaliczony");
+	}
+
 	private static void putMark(Student student, String key, String value) {
 		if (!StringUtils.isEmpty(value)) {
 			if (StringUtils.isNumeric(value)) {
 				int mark = Integer.parseInt(value);
 				String markName = MarkUtils.numberToName(mark);
 				student.getMarks().put(key, markName);
+			} else if (SHORT_MARKS_TO_FULL.containsKey(value)) {
+				student.getMarks().put(key, SHORT_MARKS_TO_FULL.get(value));
 			} else {
 				student.getMarks().put(key, value);
 			}
