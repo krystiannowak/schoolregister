@@ -234,12 +234,11 @@ public class XmlExporter {
 
 	private static String markTags(Student student) {
 
-		Map<String, String> sorted = student.getMarks().entrySet().stream()
-				.filter(e -> e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX) && !StringUtils.isEmpty(e.getValue()))
-				.sorted(Comparator.comparing(Map.Entry::getKey)).collect(Collectors
-						.toMap(e -> e.getKey().substring(OPTIONAL_SUBJECT_PREFIX.length()), Map.Entry::getValue));
-
-		Map<Long, Map.Entry<String, String>> indexed = StreamUtils.zipWithIndex(sorted.entrySet().stream())
+		Map<Long, Map.Entry<String, String>> indexed = StreamUtils
+				.zipWithIndex(student.getMarks().entrySet().stream()
+						.filter(e -> e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX)
+								&& !StringUtils.isEmpty(e.getValue()))
+						.sorted(Comparator.comparing(Map.Entry::getKey)))
 				.collect(Collectors.toMap(Indexed::getIndex, Indexed::getValue));
 
 		Map<String, String> gradeTags = indexed.entrySet().stream().collect(
@@ -248,7 +247,7 @@ public class XmlExporter {
 		Map<String, String> subjectTags = indexed.entrySet().stream()
 				.collect(Collectors.toMap(e -> OPTIONAL_SUBJECT_TAG_PREFIX + (e.getKey() + 1), e -> {
 
-					String mappingLookup = e.getValue().getKey();
+					String mappingLookup = e.getValue().getKey().substring(OPTIONAL_SUBJECT_PREFIX.length());
 					if ("zajecia_dodatkowe_ocena3".equals(mappingLookup)) {
 						return "instrument dodatkowy - " + student.getAdditionalInstrument();
 					} else {
