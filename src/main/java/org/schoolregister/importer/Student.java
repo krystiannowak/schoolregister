@@ -28,6 +28,8 @@ public class Student {
 
 	private String speciality;
 
+	private String subSpeciality;
+
 	private String instrument;
 
 	private String additionalInstrument;
@@ -110,6 +112,14 @@ public class Student {
 
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
+	}
+
+	public String getSubSpeciality() {
+		return subSpeciality;
+	}
+
+	public void setSubSpeciality(String subSpeciality) {
+		this.subSpeciality = subSpeciality;
 	}
 
 	public String getInstrument() {

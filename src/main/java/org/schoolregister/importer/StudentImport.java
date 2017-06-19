@@ -31,6 +31,7 @@ public class StudentImport {
 
 		XmlExporter.writeXml(students, outputDir);
 
+		System.out.println("done");
 	}
 
 	public static void main(String[] args) throws Exception {

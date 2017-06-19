@@ -80,14 +80,14 @@ public class XmlExporter {
 
 		// to config file?
 		if (student.isExceptional()) {
-			wzor = "ART-II/201-w/3-15.03.2012";
-			styleSheet = "../../../szablony/ART-II_201-w_3-15.03.2012_1.xsl";
+			wzor = "ART/20/w-28.04.2017";
+			styleSheet = "../../../szablony/ART_20_w-28.04.2017_1.xsl";
 		} else {
-			wzor = "ART-II/201/3-15.03.2012";
-			styleSheet = "../../../szablony/ART-II_201_3-15.03.2012_1.xsl";
+			wzor = "ART/20-28.04.2017";
+			styleSheet = "../../../szablony/ART_20-28.04.2017_1.xsl";
 		}
 
-		String wzorArkusza = "ART-II/280/3-15.03.2012";
+		String wzorArkusza = "ART/80";
 
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		writer.write("<?xml-stylesheet type=\"text/xsl\" href=\"" + styleSheet + "\" ?>\n");
@@ -130,6 +130,8 @@ public class XmlExporter {
 		return tags.toString();
 	}
 
+	private static final String HTML_LINE_BREAK = "&lt;BR&gt;";
+
 	// to ini file?
 	private static String unitTags() {
 		StringBuffer tags = new StringBuffer();
@@ -138,18 +140,17 @@ public class XmlExporter {
 
 		tags.append(openTag(UNIT_TAG));
 
-		tags.append(tag("typ_szkoly", "piątej szkoły podstawowej"));
-		tags.append(tag("nazwa_placowki1", "Poznańskiej Ogólnokształcącej Szkoły Muzycznej I stopnia nr 1"));
-		tags.append(tag("rok_wystawienia", "2016"));
-		tags.append(tag("dzien_miesiac_wystawienia", "24 czerwca"));
+		tags.append(tag("nazwa_placowki1", "Poznańską Ogólnokształcącą Szkołę Muzyczną I stopnia nr 1" + HTML_LINE_BREAK
+				+ "im. Henryka Wieniawskiego"));
+		tags.append(tag("rok_wystawienia", "2017"));
+		tags.append(tag("dzien_miesiac_wystawienia", "23 czerwca"));
 		tags.append(tag("miejscowosc_wystawienia", "Poznań"));
-		tags.append(tag("rok_rady", "2016"));
-		tags.append(tag("dzien_miesiac_rady", "20 czerwca"));
+		tags.append(tag("rok_rady", "2017"));
+		tags.append(tag("dzien_miesiac_rady", "19 czerwca"));
 		tags.append(tag("wojewodztwo", "wielkopolskie"));
 		tags.append(tag("miejscowosc", "Poznaniu"));
-		tags.append(tag("imie_szkoly", "Henryka Wieniawskiego"));
-		tags.append(tag("rok_szkolny1", "2015"));
-		tags.append(tag("rok_szkolny2", "2016"));
+		tags.append(tag("rok_szkolny1", "2016"));
+		tags.append(tag("rok_szkolny2", "2017"));
 
 		tags.append(closeTag(UNIT_TAG));
 
@@ -160,14 +161,14 @@ public class XmlExporter {
 	private static String classTags() {
 		StringBuffer tags = new StringBuffer();
 
-		final String CLASS_TAG = "klasa";
-
-		tags.append(openTag(CLASS_TAG));
-
-		tags.append(tag("promowany_do_klasy", "szóstej"));
-		tags.append(tag("uczeszczal_do_klasy", "piątej"));
-
-		tags.append(closeTag(CLASS_TAG));
+		// final String CLASS_TAG = "klasa";
+		//
+		// tags.append(openTag(CLASS_TAG));
+		//
+		// tags.append(tag("promowany_do_klasy", "szóstej"));
+		// tags.append(tag("uczeszczal_do_klasy", "piątej"));
+		//
+		// tags.append(closeTag(CLASS_TAG));
 
 		return tags.toString();
 	}
@@ -194,6 +195,7 @@ public class XmlExporter {
 		tags.append(tag("rok_urodzenia", DateUtils.extractYear(student.getBirthDate())));
 		tags.append(tag("miejscowosc_urodzenia_m", student.getBirthCity()));
 		tags.append(tag("cykl_wydzial", student.getSpeciality()));
+		tags.append(tag("w_zakresie_gry_na", student.getSubSpeciality()));
 
 		tags.append(markTags(student));
 
@@ -280,7 +282,6 @@ public class XmlExporter {
 	}
 
 	private static String achievementsTags(Student student) {
-		final String HTML_LINE_BREAK = "&lt;BR&gt;";
 
 		StringBuffer tags = new StringBuffer();
 
