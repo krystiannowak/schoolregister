@@ -228,12 +228,14 @@ public class XmlExporter {
 	static {
 		OPTIONAL_SUBJECTS.put("ocena_opt1", "instrument dodatkowy - ${ADDITIONAL_INSTRUMENT}");
 		OPTIONAL_SUBJECTS.put("ocena_opt2", "rytmika dodatkowa");
+		OPTIONAL_SUBJECTS.put("ocena_opt3", "zespół perkusyjny");
 	}
 
 	private static final String[][] OPTIONAL_OUTPUT_COORDS = //
 	{ //
 			{ "przedmiot29", "ocena29" }, //
-			{ "przedmiot30", "ocena30" } //
+			{ "przedmiot30", "ocena30" }, //
+			{ "przedmiot31", "ocena31" } //
 	};
 
 	private static final Map<Long, Map.Entry<String, String>> INDEXED_OPTIONAL_SUBJECTS = StreamUtils
