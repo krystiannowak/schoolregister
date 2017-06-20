@@ -7,18 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.codepoetics.protonpack.Indexed;
-import com.codepoetics.protonpack.StreamUtils;
 
 /**
  * 
@@ -220,43 +215,7 @@ public class XmlExporter {
 		return tags.toString();
 	}
 
-	private static final String OPTIONAL_SUBJECT_PREFIX = "OPT:";
-
-	private static final String OPTIONAL_GRADE_TAG_PREFIX = "zajecia_dodatkowe_ocena";
-	private static final String OPTIONAL_SUBJECT_TAG_PREFIX = "zajecia_dodatkowe";
-
-	private static final Map<String, String> ADDITIONAL_SUBJECT_MAPPING = new LinkedHashMap<>();
-
-	static {
-		ADDITIONAL_SUBJECT_MAPPING.put("zajecia_dodatkowe_ocena1", "język niemiecki");
-		ADDITIONAL_SUBJECT_MAPPING.put("zajecia_dodatkowe_ocena2", "zespół rytmiki");
-		// ADDITIONAL_SUBJECT_MAPPING.put("zajecia_dodatkowe_ocena3",
-		// "instrument dodatkowy - ");
-	}
-
 	private static String markTags(Student student) {
-
-		Map<Long, Map.Entry<String, String>> indexed = StreamUtils
-				.zipWithIndex(student.getMarks().entrySet().stream()
-						.filter(e -> e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX)
-								&& !StringUtils.isEmpty(e.getValue()))
-						.sorted(Comparator.comparing(Map.Entry::getKey)))
-				.collect(Collectors.toMap(Indexed::getIndex, Indexed::getValue));
-
-		Map<String, String> gradeTags = indexed.entrySet().stream().collect(
-				Collectors.toMap(e -> OPTIONAL_GRADE_TAG_PREFIX + (e.getKey() + 1), e -> e.getValue().getValue()));
-
-		Map<String, String> subjectTags = indexed.entrySet().stream()
-				.collect(Collectors.toMap(e -> OPTIONAL_SUBJECT_TAG_PREFIX + (e.getKey() + 1), e -> {
-
-					String mappingLookup = e.getValue().getKey().substring(OPTIONAL_SUBJECT_PREFIX.length());
-					if ("zajecia_dodatkowe_ocena3".equals(mappingLookup)) {
-						return "instrument dodatkowy - " + student.getAdditionalInstrument();
-					} else {
-						return ADDITIONAL_SUBJECT_MAPPING.get(mappingLookup);
-					}
-
-				}));
 
 		StringBuffer tags = new StringBuffer();
 
@@ -264,15 +223,10 @@ public class XmlExporter {
 
 		tags.append(openTag(MARKS_TAG));
 
-		student.getMarks().entrySet().stream()
-				.filter(e -> !e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX) && !StringUtils.isEmpty(e.getValue()))
+		student.getMarks().entrySet().stream().filter(e -> !StringUtils.isEmpty(e.getValue()))
 				.forEach(e -> tags.append(tag(e.getKey().replaceAll(" ", ""), e.getValue())));
 
-		gradeTags.forEach((k, v) -> tags.append(tag(k.replaceAll(" ", ""), v)));
-
-		tags.append(subjectTags(student.getInstrument()));
-
-		subjectTags.forEach((k, v) -> tags.append(tag(k, v)));
+		tags.append(subjectTags(student.getInstrument(), student.getAdditionalInstrument()));
 
 		tags.append(achievementsTags(student));
 
@@ -306,6 +260,7 @@ public class XmlExporter {
 		return tags.toString();
 	}
 
+	// TODO: make it immutable!!!
 	private static final Map<String, String> SUBJECT_MAPPING = new LinkedHashMap<>();
 
 	static {
@@ -319,19 +274,24 @@ public class XmlExporter {
 		SUBJECT_MAPPING.put("przedmiot8", "plastyka");
 		SUBJECT_MAPPING.put("przedmiot9", "wychowanie fizyczne");
 		SUBJECT_MAPPING.put("przedmiot10", "wychowanie do życia w rodzinie");
+		SUBJECT_MAPPING.put("przedmiot11", "język niemiecki");
 
-		// SUBJECT_MAPPING.put("przedmiot16", "instrument główny - ...");
-		SUBJECT_MAPPING.put("przedmiot17", "fortepian obowiązkowy");
+		// SUBJECT_MAPPING.put("przedmiot21", "instrument główny - ...");
 
-		SUBJECT_MAPPING.put("przedmiot18", "kształcenie słuchu");
-		SUBJECT_MAPPING.put("przedmiot19", "audycje muzyczne");
+		SUBJECT_MAPPING.put("przedmiot22", "fortepian dodatkowy");
+		SUBJECT_MAPPING.put("przedmiot23", "rytmika");
+		SUBJECT_MAPPING.put("przedmiot24", "kształcenie słuchu");
+		SUBJECT_MAPPING.put("przedmiot25", "audycje muzyczne");
+		SUBJECT_MAPPING.put("przedmiot26", "chór");
+		SUBJECT_MAPPING.put("przedmiot27", "orkiestra");
+		SUBJECT_MAPPING.put("przedmiot28", "zespół kameralny");
 
-		SUBJECT_MAPPING.put("przedmiot20", "chór");
-		SUBJECT_MAPPING.put("przedmiot21", "orkiestra");
-		SUBJECT_MAPPING.put("przedmiot22", "zespół kameralny");
+		// SUBJECT_MAPPING.put("przedmiot29", "instrument dodatkowy");
+
+		SUBJECT_MAPPING.put("przedmiot30", "rytmika dodatkowa / zespół rytmiki");
 	}
 
-	private static String subjectTags(String mainInstrument) {
+	private static String subjectTags(String mainInstrument, String additionalInstrument) {
 		// TODO: from config?
 
 		StringBuffer tags = new StringBuffer();
@@ -342,8 +302,14 @@ public class XmlExporter {
 		}
 
 		// to some customized config with template
-		// e.g. przedmiot16=instrument główny - ${student.instrument}
-		tags.append(tag("przedmiot16", "instrument główny - " + mainInstrument));
+		// e.g. przedmiot21=instrument główny - ${student.instrument}
+		tags.append(tag("przedmiot21", "instrument główny - " + mainInstrument));
+
+		if (StringUtils.isBlank(additionalInstrument)) {
+			tags.append(tag("przedmiot29", "instrument dodatkowy"));
+		} else {
+			tags.append(tag("przedmiot29", "instrument dodatkowy - " + additionalInstrument));
+		}
 
 		return tags.toString();
 	}
