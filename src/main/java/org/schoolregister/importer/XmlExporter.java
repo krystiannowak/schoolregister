@@ -7,13 +7,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.codepoetics.protonpack.Indexed;
+import com.codepoetics.protonpack.StreamUtils;
 
 /**
  * 
@@ -215,7 +221,53 @@ public class XmlExporter {
 		return tags.toString();
 	}
 
+	private static final String OPTIONAL_SUBJECT_PREFIX = "OPT:";
+
+	private static final Map<String, String> OPTIONAL_SUBJECTS = new LinkedHashMap<>();
+
+	static {
+		OPTIONAL_SUBJECTS.put("ocena_opt1", "instrument dodatkowy - ${ADDITIONAL_INSTRUMENT}");
+		OPTIONAL_SUBJECTS.put("ocena_opt2", "rytmika dodatkowa");
+	}
+
+	private static final String[][] OPTIONAL_OUTPUT_COORDS = //
+	{ //
+			{ "przedmiot29", "ocena29" }, //
+			{ "przedmiot30", "ocena30" } //
+	};
+
+	private static final Map<Long, Map.Entry<String, String>> INDEXED_OPTIONAL_SUBJECTS = StreamUtils
+			.zipWithIndex(OPTIONAL_SUBJECTS.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)))
+			.collect(Collectors.toMap(Indexed::getIndex, Indexed::getValue));
+
 	private static String markTags(Student student) {
+
+		Map<Long, Map.Entry<String, String>> indexedOptionalExistingGrades = StreamUtils
+				.zipWithIndex(student.getMarks().entrySet().stream()
+						.filter(e -> e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX)
+								&& !StringUtils.isEmpty(e.getValue()))
+						.sorted(Comparator.comparing(Map.Entry::getKey)))
+				.collect(Collectors.toMap(Indexed::getIndex, entry -> {
+					return Pair.of(entry.getValue().getKey().replaceFirst(OPTIONAL_SUBJECT_PREFIX, ""),
+							entry.getValue().getValue());
+				}));
+
+		Map<String, String> optSubjectTagNameToSubjectName =
+
+		indexedOptionalExistingGrades.entrySet().stream().map(x -> {
+			String subjectTagName = OPTIONAL_OUTPUT_COORDS[x.getKey().intValue()][0];
+			String subjectName = OPTIONAL_SUBJECTS.get(x.getValue().getKey());
+			return Pair.of(subjectTagName,
+					subjectName.replace("${ADDITIONAL_INSTRUMENT}", student.getAdditionalInstrument()));
+		}).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+
+		Map<String, String> optGradeTagNameToGrade =
+
+		indexedOptionalExistingGrades.entrySet().stream().map(x -> {
+			String gradeTagName = OPTIONAL_OUTPUT_COORDS[x.getKey().intValue()][1];
+			String gradeValue = x.getValue().getValue();
+			return Pair.of(gradeTagName, gradeValue);
+		}).collect(Collectors.toMap(Pair::getKey, Pair::getValue));
 
 		StringBuffer tags = new StringBuffer();
 
@@ -223,10 +275,19 @@ public class XmlExporter {
 
 		tags.append(openTag(MARKS_TAG));
 
-		student.getMarks().entrySet().stream().filter(e -> !StringUtils.isEmpty(e.getValue()))
+		student.getMarks().entrySet().stream()
+				.filter(e -> !e.getKey().startsWith(OPTIONAL_SUBJECT_PREFIX) && !StringUtils.isEmpty(e.getValue()))
 				.forEach(e -> tags.append(tag(e.getKey().replaceAll(" ", ""), e.getValue())));
 
+		optGradeTagNameToGrade.forEach((gradeTagName, grade) -> {
+			tags.append(tag(gradeTagName, grade));
+		});
+
 		tags.append(subjectTags(student.getInstrument(), student.getAdditionalInstrument()));
+
+		optSubjectTagNameToSubjectName.forEach((subjectTagName, subjectName) -> {
+			tags.append(tag(subjectTagName, subjectName));
+		});
 
 		tags.append(achievementsTags(student));
 
@@ -288,7 +349,7 @@ public class XmlExporter {
 
 		// SUBJECT_MAPPING.put("przedmiot29", "instrument dodatkowy");
 
-		SUBJECT_MAPPING.put("przedmiot30", "rytmika dodatkowa / zespół rytmiki");
+		// SUBJECT_MAPPING.put("przedmiot30", "rytmika dodatkowa");
 	}
 
 	private static String subjectTags(String mainInstrument, String additionalInstrument) {
@@ -305,11 +366,12 @@ public class XmlExporter {
 		// e.g. przedmiot21=instrument główny - ${student.instrument}
 		tags.append(tag("przedmiot21", "instrument główny - " + mainInstrument));
 
-		if (StringUtils.isBlank(additionalInstrument)) {
-			tags.append(tag("przedmiot29", "instrument dodatkowy"));
-		} else {
-			tags.append(tag("przedmiot29", "instrument dodatkowy - " + additionalInstrument));
-		}
+		// if (StringUtils.isBlank(additionalInstrument)) {
+		// tags.append(tag("przedmiot29", "instrument dodatkowy"));
+		// } else {
+		// tags.append(tag("przedmiot29", "instrument dodatkowy - " +
+		// additionalInstrument));
+		// }
 
 		return tags.toString();
 	}
