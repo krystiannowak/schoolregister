@@ -242,6 +242,10 @@ public class XmlExporter {
 			.zipWithIndex(OPTIONAL_SUBJECTS.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)))
 			.collect(Collectors.toMap(Indexed::getIndex, Indexed::getValue));
 
+	private static final String MINORITY_LANG_SUBJECT_TAG = "przedmiot12";
+	private static final String MINORITY_LANG_SUBJECT_NAME = "język ukraiński";
+	private static final String MINORITY_LANG_GRADE_TAG = "ocena12";
+
 	private static String markTags(Student student) {
 
 		Map<Long, Map.Entry<String, String>> indexedOptionalExistingGrades = StreamUtils
@@ -285,7 +289,11 @@ public class XmlExporter {
 			tags.append(tag(gradeTagName, grade));
 		});
 
-		tags.append(subjectTags(student.getInstrument(), student.getAdditionalInstrument()));
+		tags.append(subjectTags(student.getInstrument()));
+
+		student.getMarks().entrySet().stream()
+				.filter(e -> e.getKey().equals(MINORITY_LANG_GRADE_TAG) && !StringUtils.isEmpty(e.getValue()))
+				.forEach(e -> tags.append(tag(MINORITY_LANG_SUBJECT_TAG, MINORITY_LANG_SUBJECT_NAME)));
 
 		optSubjectTagNameToSubjectName.forEach((subjectTagName, subjectName) -> {
 			tags.append(tag(subjectTagName, subjectName));
@@ -339,6 +347,8 @@ public class XmlExporter {
 		SUBJECT_MAPPING.put("przedmiot10", "wychowanie do życia w rodzinie");
 		SUBJECT_MAPPING.put("przedmiot11", "język niemiecki");
 
+		// SUBJECT_MAPPING.put("przedmiot12", "język ukraiński");
+
 		// SUBJECT_MAPPING.put("przedmiot21", "instrument główny - ...");
 
 		SUBJECT_MAPPING.put("przedmiot22", "fortepian dodatkowy");
@@ -354,7 +364,7 @@ public class XmlExporter {
 		// SUBJECT_MAPPING.put("przedmiot30", "rytmika dodatkowa");
 	}
 
-	private static String subjectTags(String mainInstrument, String additionalInstrument) {
+	private static String subjectTags(String mainInstrument) {
 		// TODO: from config?
 
 		StringBuffer tags = new StringBuffer();
